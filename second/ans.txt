@@ -1,0 +1,323 @@
+1. FTP Server (vsftpd)
+Purpose: Transfer files between client & server.
+
+Commands:
+
+bash
+Copy
+Edit
+# Install FTP server
+sudo apt update
+sudo apt install vsftpd -y
+
+# Start & enable service
+sudo systemctl start vsftpd
+sudo systemctl enable vsftpd
+
+# Edit config (optional for anonymous/secured access)
+sudo nano /etc/vsftpd.conf
+
+# Restart service
+sudo systemctl restart vsftpd
+
+# Test from client
+ftp <server_ip>
+Explanation: vsftpd = Very Secure FTP Daemon; allows file transfers using FTP protocol.
+
+2. Telnet Server
+Purpose: Remote login into another system using command line.
+
+Commands:
+
+bash
+Copy
+Edit
+# Install telnet server
+sudo apt install telnetd -y
+
+# Start & enable service
+sudo systemctl start inetd
+sudo systemctl enable inetd
+
+# On client machine
+telnet <server_ip>
+Explanation: Telnet is insecure (plaintext), but used for basic remote access in labs.
+
+3. Inbuilt Firewall (UFW)
+Purpose: Control network traffic to/from server.
+
+Commands:
+
+bash
+Copy
+Edit
+# Install (if needed)
+sudo apt install ufw -y
+
+# Enable firewall
+sudo ufw enable
+
+# Allow port 21 (FTP)
+sudo ufw allow 21/tcp
+
+# Allow port 23 (Telnet)
+sudo ufw allow 23/tcp
+
+# Check status
+sudo ufw status
+Explanation: UFW = Uncomplicated Firewall; simple interface for managing iptables.
+
+4. POP and IMAP Server (Dovecot)
+Purpose: Receive and store emails for clients.
+
+Commands:
+
+bash
+Copy
+Edit
+# Install dovecot for POP3/IMAP
+sudo apt install dovecot-pop3d dovecot-imapd -y
+
+# Start & enable
+sudo systemctl start dovecot
+sudo systemctl enable dovecot
+
+# Edit config if needed
+sudo nano /etc/dovecot/dovecot.conf
+
+# Check service status
+sudo systemctl status dovecot
+Explanation: POP3 downloads mail; IMAP syncs mail between client & server.
+
+5. Proxy Server (Squid)
+Purpose: Act as middleman for internet requests, can cache and filter.
+
+Commands:
+
+bash
+Copy
+Edit
+# Install squid
+sudo apt install squid -y
+
+# Backup config
+sudo cp /etc/squid/squid.conf /etc/squid/squid.conf.bak
+
+# Edit config
+sudo nano /etc/squid/squid.conf
+# Change http_port 3128
+# Set allowed networks (acl localnet)
+
+# Restart squid
+sudo systemctl restart squid
+
+# Test with browser proxy settings or curl
+curl --proxy http://<server_ip>:3128 http://example.com
+Explanation: Squid caches and filters HTTP requests to improve speed/security.
+
+6. Samba Server
+Purpose: Share files/folders between Linux and Windows.
+
+Commands:
+
+bash
+Copy
+Edit
+sudo apt install samba -y
+sudo nano /etc/samba/smb.conf
+# Add:
+[shared]
+   path = /home/user/shared
+   read only = no
+   guest ok = yes
+sudo systemctl restart smbd
+Explanation: Samba lets Linux share folders to Windows as a network share.
+
+7. DHCP Server
+Purpose: Automatically assign IP addresses to clients.
+
+Commands:
+
+bash
+Copy
+Edit
+sudo apt install isc-dhcp-server -y
+sudo nano /etc/dhcp/dhcpd.conf
+# Example:
+subnet 192.168.1.0 netmask 255.255.255.0 {
+  range 192.168.1.50 192.168.1.100;
+  option routers 192.168.1.1;
+}
+sudo systemctl restart isc-dhcp-server
+Explanation: DHCP = Dynamic Host Configuration Protocol.
+
+8. SMTP Server (Postfix)
+Purpose: Send outgoing emails.
+
+Commands:
+
+bash
+Copy
+Edit
+sudo apt install postfix -y
+sudo dpkg-reconfigure postfix
+sudo systemctl restart postfix
+Explanation: Postfix handles sending email from server to other mail
+
+
+1. Find subnet mask and physical (MAC) address
+bash
+Copy
+Edit
+ifconfig
+Shows IP address, netmask (subnet mask), MAC address for each interface.
+
+Example output snippet:
+
+nginx
+Copy
+Edit
+inet 192.168.1.5  netmask 255.255.255.0
+ether 08:00:27:af:33:2b
+2. Find Round Trip Time (RTT) to a host
+bash
+Copy
+Edit
+ping google.com
+Sends ICMP packets and shows RTT in milliseconds.
+
+Example:
+
+ini
+Copy
+Edit
+time=25.3 ms
+3. List routers your connection crosses (traceroute)
+bash
+Copy
+Edit
+traceroute google.com
+Shows hops between your machine and target host.
+
+4. Show all network connections (TCP, UDP, listening ports)
+bash
+Copy
+Edit
+netstat -an
+Lists all connections & listening ports.
+
+-a → all
+
+-n → numeric addresses
+
+5. Check if a host is reachable
+bash
+Copy
+Edit
+ping 8.8.8.8
+Tests network reachability to IP.
+
+6. Find domain name from IP (reverse lookup)
+bash
+Copy
+Edit
+nslookup 8.8.8.8
+Resolves IP to host/domain name.
+
+7. Find IP address from domain (DNS query)
+bash
+Copy
+Edit
+nslookup google.com
+Shows the IP address of given domain.
+
+8. Enable authentication for single-user mode
+bash
+Copy
+Edit
+sudo passwd root
+Sets a root password; single-user mode will then ask for it.
+
+9. View network interfaces and assigned IP addresses
+bash
+Copy
+Edit
+ip addr
+or
+
+bash
+Copy
+Edit
+ifconfig
+Lists all NICs with assigned IPs.
+
+10. Print network packet headers
+bash
+Copy
+Edit
+tcpdump -i eth0
+Captures & displays packet headers in real-time. (eth0 = interface name)
+
+11. Test communication with a host (check status)
+bash
+Copy
+Edit
+ping hostname_or_ip
+Shows if host is reachable & time delay.
+
+12. Create a group in Linux
+bash
+Copy
+Edit
+sudo groupadd Student
+Creates group named "Student".
+
+bash
+Copy
+Edit
+sudo chgrp Student filename
+Changes file's group to Student.
+
+13. Transfer a directory to remote server
+bash
+Copy
+Edit
+scp -r myfolder username@remote_ip:/path/to/destination
+-r = recursive (copy folder with contents)
+
+Requires SSH access.
+
+14. Configure & test FTP connection
+bash
+Copy
+Edit
+sudo apt install vsftpd   # Install FTP server
+ftp 127.0.0.1              # Test FTP locally
+15. Configure Samba server
+Install:
+
+bash
+Copy
+Edit
+sudo apt install samba
+Edit config:
+
+bash
+Copy
+Edit
+sudo nano /etc/samba/smb.conf
+Add:
+
+pgsql
+Copy
+Edit
+[shared]
+   path = /home/user/shared
+   read only = no
+   guest ok = yes
+Restart:
+
+bash
+Copy
+Edit
+sudo systemctl restart smbd
