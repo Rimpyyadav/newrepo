@@ -1,0 +1,13 @@
+CREATE DATABASE subject_details;
+USE subject_details;
+CREATE TABLE course_author (
+    Topic VARCHAR(50),
+    Block_number VARCHAR(50),
+    Author_name VARCHAR(50)
+);
+INSERT INTO course_author VALUES
+('HTML', 'Block 1', 'Sharma'),
+('Spring', 'Block 2', 'Mishra'),
+('CSS', 'Block 3', 'Verma'),
+('JavaScript', 'Block 4', 'Kumar'),
+('JSP', 'Block 5', 'Gupta');

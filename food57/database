@@ -1,0 +1,14 @@
+CREATE DATABASE food;
+USE food;
+
+CREATE TABLE foodlist (
+    Foodname VARCHAR(50),
+    Chef_name VARCHAR(50)
+);
+
+INSERT INTO foodlist VALUES
+('DOSA', 'Kumar'),
+('MIX-VEG', 'Singh'),
+('PIZZA', 'Sharma'),
+('BURGER', 'Verma'),
+('PASTA', 'Gupta');
